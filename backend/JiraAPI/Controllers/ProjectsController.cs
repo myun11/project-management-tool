@@ -5,34 +5,30 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
+using Core.Interfaces;
 
 namespace JiraAPI.Controllers;
 [ApiController]
 [Route("api/[controller]")]
-public class ProjectsController : ControllerBase
+public class ProjectsController(IProjectRepository repository) : ControllerBase
 {
-    private JiraContext _context;
+
 
     private bool CheckID(Guid guid) {
-        return _context.Projects.Any(e => e.ProjectId == guid);
-    }
-
-    public ProjectsController(JiraContext context)
-    {
-        this._context = context;
-
+        return repository.CheckID(guid);
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
+    public async Task<ActionResult<IReadOnlyList<Project>>> GetProjects()
     {
-        return await _context.Projects.ToListAsync();
+        var projects = await repository.GetProjectsAsync();
+        return Ok(projects);
     }
 
     [HttpGet("{Guid:guid}")]
     public async Task<ActionResult<Project>> GetProject(Guid guid)
     {
-        var project = await _context.Projects.FindAsync(guid);
+        var project = await repository.GetProjectByIdAsync(guid);
 
         if (project == null)
         {
@@ -45,9 +41,8 @@ public class ProjectsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Project>> PostProject(Project project)
     {
-        _context.Projects.Add(project);
-        await _context.SaveChangesAsync();
-
+        repository.PostProject(project);
+        await repository.SaveAllAsync();
         return project;
         // return CreatedAtAction("GetProject", new { id = project.Id }, project);
     }
@@ -60,21 +55,20 @@ public class ProjectsController : ControllerBase
         if (project.ProjectId != guid) {
             return BadRequest("Invalid project ID while updating project. ID does not match.");
         }
-        _context.Entry(project).State = EntityState.Modified;
-
-        await _context.SaveChangesAsync();
+        repository.UpdateProject(project);
+        await repository.SaveAllAsync();
         return NoContent();
 
     }
 
     [HttpDelete("{Guid:Guid}")]
     public async Task<ActionResult> DeleteProject(Guid guid) {
-        var project = await _context.Projects.FindAsync(guid);
+        var project = await repository.GetProjectByIdAsync(guid);
         if (project == null) {
             return NotFound();
         }
-        _context.Projects.Remove(project);
-        await _context.SaveChangesAsync();
+        repository.DeleteProject(project);
+        await repository.SaveAllAsync();
         return NoContent();
     }
 }
