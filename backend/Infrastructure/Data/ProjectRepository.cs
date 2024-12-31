@@ -23,12 +23,42 @@ public class ProjectRepository(JiraContext context) : IProjectRepository
         return await context.Projects.FindAsync(id);
     }
 
-    public async Task<IReadOnlyList<Project>> GetProjectsAsync()
+  public Task<IReadOnlyList<string>> GetProjectCategoriesAsync()
+  {
+    throw new NotImplementedException();
+  }
+
+  public async Task<IReadOnlyList<Project>> GetProjectsAsync()
     {
         return await context.Projects.ToListAsync();
     }
 
-    public async Task PostMultipleProjectsAsync(IEnumerable<Project> projects)
+  public Task<IReadOnlyList<Project>> GetProjectsByArchivedAsync(bool archived)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<IReadOnlyList<Project>> GetProjectsByCategoryAsync(string category)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<IReadOnlyList<Project>> GetProjectsByCreatedDateAsync(DateTime createdDate)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<IReadOnlyList<Project>> GetProjectsByDeadlineAsync(DateTime deadline)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<IReadOnlyList<Project>> GetProjectsByLastModifiedDateAsync(DateTime lastModifiedDate)
+  {
+    throw new NotImplementedException();
+  }
+
+  public async Task PostMultipleProjectsAsync(IEnumerable<Project> projects)
     {
         await context.Projects.AddRangeAsync(projects);
     }
