@@ -28,6 +28,11 @@ public class ProjectRepository(JiraContext context) : IProjectRepository
         return await context.Projects.ToListAsync();
     }
 
+    public async Task PostMultipleProjectsAsync(IEnumerable<Project> projects)
+    {
+        await context.Projects.AddRangeAsync(projects);
+    }
+
     public void PostProject(Project project)
     {
         context.Projects.Add(project);

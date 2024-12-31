@@ -12,4 +12,5 @@ public interface IProjectRepository
     void DeleteProject(Project project);
     bool CheckID(Guid guid);
     Task<bool> SaveAllAsync();
+    Task PostMultipleProjectsAsync(IEnumerable<Project> projects);
 }

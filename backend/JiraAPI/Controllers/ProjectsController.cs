@@ -47,6 +47,14 @@ public class ProjectsController(IProjectRepository repository) : ControllerBase
         // return CreatedAtAction("GetProject", new { id = project.Id }, project);
     }
 
+    [HttpPost("multiple")]
+    public async Task<ActionResult> PostMultipleProjects(IEnumerable<Project> projects)
+    {
+        await repository.PostMultipleProjectsAsync(projects);
+        await repository.SaveAllAsync();
+        return NoContent();
+    }
+
     [HttpPut("{Guid:guid}")]
     public async Task<ActionResult> UpdateProject(Guid guid, Project project) {
         if (!CheckID(project.ProjectId)) {
