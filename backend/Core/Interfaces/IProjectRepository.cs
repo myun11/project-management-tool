@@ -13,4 +13,12 @@ public interface IProjectRepository
     bool CheckID(Guid guid);
     Task<bool> SaveAllAsync();
     Task PostMultipleProjectsAsync(IEnumerable<Project> projects);
+    Task<IReadOnlyList<string>> GetProjectCategoriesAsync();
+    Task<IReadOnlyList<Project>> GetProjectsByCategoryAsync(string category);
+    Task<IReadOnlyList<Project>> GetProjectsByArchivedAsync(bool archived);
+    Task<IReadOnlyList<Project>> GetProjectsByCreatedDateAsync(DateTime createdDate);
+    Task<IReadOnlyList<Project>> GetProjectsByDeadlineAsync(DateTime deadline);
+    Task<IReadOnlyList<Project>> GetProjectsByLastModifiedDateAsync(DateTime lastModifiedDate);
+    
+
 }
