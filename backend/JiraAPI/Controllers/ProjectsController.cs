@@ -79,4 +79,40 @@ public class ProjectsController(IProjectRepository repository) : ControllerBase
         await repository.SaveAllAsync();
         return NoContent();
     }
+
+    [HttpGet("categories")]
+    public async Task<ActionResult<IReadOnlyList<string>>> GetProjectCategories() {
+        var categories = await repository.GetProjectCategoriesAsync();
+        return Ok(categories);
+    }
+
+    [HttpGet("category/{category}")]
+    public async Task<ActionResult<IReadOnlyList<Project>>> GetProjectsByCategory(string category) {
+        var projects = await repository.GetProjectsByCategoryAsync(category);
+        return Ok(projects);
+    }
+
+    [HttpGet("archived/{archived}")]
+    public async Task<ActionResult<IReadOnlyList<Project>>> GetProjectsByArchived(bool archived) {
+        var projects = await repository.GetProjectsByArchivedAsync(archived);
+        return Ok(projects);
+    }
+
+    [HttpGet("created/{createdDate}")]
+    public async Task<ActionResult<IReadOnlyList<Project>>> GetProjectsByCreatedDate(DateTime createdDate) {
+        var projects = await repository.GetProjectsByCreatedDateAsync(createdDate);
+        return Ok(projects);
+    }
+
+    [HttpGet("deadline/{deadline}")]
+    public async Task<ActionResult<IReadOnlyList<Project>>> GetProjectsByDeadline(DateTime deadline) {
+        var projects = await repository.GetProjectsByDeadlineAsync(deadline);
+        return Ok(projects);
+    }
+
+    [HttpGet("lastmodified/{lastModifiedDate}")]
+    public async Task<ActionResult<IReadOnlyList<Project>>> GetProjectsByLastModifiedDate(DateTime lastModifiedDate) {
+        var projects = await repository.GetProjectsByLastModifiedDateAsync(lastModifiedDate);
+        return Ok(projects);
+    }
 }
