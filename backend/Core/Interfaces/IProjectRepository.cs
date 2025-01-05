@@ -5,7 +5,13 @@ namespace Core.Interfaces;
 
 public interface IProjectRepository
 {
-    Task<IReadOnlyList<Project>> GetProjectsAsync();
+    Task<IReadOnlyList<Project>> GetProjectsAsync(
+        string? category = null,
+        bool? archived = null,
+        DateTime? createdDate = null,
+        DateTime? deadline = null,
+        DateTime? lastModifiedDate = null,
+        string? sort = "ascName");
     Task<Project?> GetProjectByIdAsync(Guid id);
     void PostProject(Project project);
     void UpdateProject(Project project);
