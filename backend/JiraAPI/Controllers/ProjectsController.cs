@@ -18,12 +18,19 @@ public class ProjectsController(IProjectRepository repository) : ControllerBase
         return repository.CheckID(guid);
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Project>>> GetProjects()
-    {
-        var projects = await repository.GetProjectsAsync();
-        return Ok(projects);
-    }
+        [HttpGet]
+        public async Task<ActionResult<IReadOnlyList<Project>>> GetProjects(
+            string? category = null,
+            bool? archived = null,
+            DateTime? createdDate = null,
+            DateTime? deadline = null,
+            DateTime? lastModifiedDate = null,
+            string? sort = "ascName"
+        )
+        {
+            var projects = await repository.GetProjectsAsync(category, archived, createdDate, deadline, lastModifiedDate, sort);
+            return Ok(projects);
+        }
 
     [HttpGet("{Guid:guid}")]
     public async Task<ActionResult<Project>> GetProject(Guid guid)
