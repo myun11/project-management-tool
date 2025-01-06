@@ -20,6 +20,7 @@ public class ProjectsController(IProjectRepository repository) : ControllerBase
 
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Project>>> GetProjects(
+            //TODO: Add query parameters for filtering?
             string? category = null,
             bool? archived = null,
             DateTime? createdDate = null,
